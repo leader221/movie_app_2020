@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>배드민턴 복귀 재활 트래커</title>
+  <meta name="description" content="허리 신경성형술 이후 배드민턴 복귀를 위한 단계형 운동 체크 웹페이지">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f4;
+      --surface: #ffffff;
+      --surface-2: #eef4f1;
+      --ink: #17211e;
+      --muted: #5c6862;
+      --line: #d8e0dc;
+      --green: #17785f;
+      --green-dark: #0f5f4b;
+      --blue: #256a8a;
+      --amber: #b66a12;
+      --red: #b64035;
+      --shadow: 0 16px 42px rgba(20, 34, 30, 0.11);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(23, 120, 95, 0.12), transparent 34rem),
+        linear-gradient(220deg, rgba(37, 106, 138, 0.10), transparent 30rem),
+        var(--bg);
+      color: var(--ink);
+    }
+
+    a { color: var(--green-dark); }
+
+    .app {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 16px 14px 92px;
+    }
+
+    header {
+      display: grid;
+      gap: 14px;
+      padding: 22px 4px 14px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: 0.86rem;
+      font-weight: 750;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(2rem, 9vw, 4.5rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.03rem;
+      line-height: 1.55;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 12px;
+    }
+
+    .panel, .card {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel { padding: 16px; }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 92px;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.55rem;
+      line-height: 1.1;
+    }
+
+    .progress-wrap {
+      margin-top: 14px;
+      padding: 14px;
+      background: var(--surface-2);
+      border-radius: 8px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 750;
+    }
+
+    .bar {
+      height: 14px;
+      overflow: hidden;
+      background: #dbe6e1;
+      border-radius: 999px;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      border-radius: inherit;
+      transition: width 240ms ease;
+    }
+
+    .today {
+      display: grid;
+      gap: 12px;
+    }
+
+    .today h2, section h2 {
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: 0;
+    }
+
+    .today-date {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .check-row {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--green);
+    }
+
+    label {
+      display: grid;
+      gap: 2px;
+      font-weight: 750;
+    }
+
+    label small {
+      color: var(--muted);
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field span {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 750;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--green);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 76px;
+      padding: 10px;
+      resize: vertical;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .primary {
+      color: white;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .danger {
+      color: var(--red);
+      border-color: rgba(182, 64, 53, 0.35);
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      padding: 8px 0;
+      overflow-x: auto;
+      backdrop-filter: blur(14px);
+    }
+
+    nav a {
+      flex: 0 0 auto;
+      padding: 9px 12px;
+      color: var(--ink);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 750;
+    }
+
+    section {
+      scroll-margin-top: 70px;
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      padding: 14px;
+      box-shadow: none;
+    }
+
+    .phase-card {
+      display: grid;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-card.current {
+      border-color: rgba(23, 120, 95, 0.65);
+      box-shadow: 0 0 0 3px rgba(23, 120, 95, 0.12);
+    }
+
+    .phase-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .phase-title h3 {
+      margin: 0;
+      font-size: 1.08rem;
+      line-height: 1.25;
+    }
+
+    .tag {
+      flex: 0 0 auto;
+      padding: 5px 8px;
+      color: var(--green-dark);
+      background: #e0f1eb;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .phase-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.48;
+    }
+
+    .gate {
+      padding: 10px;
+      border-radius: 8px;
+      background: #fff7e9;
+      color: #613605;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .phase-checks {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-check {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      background: var(--surface-2);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .mini-check input { width: 20px; height: 20px; }
+
+    .alert {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #fff0ef;
+      border: 1px solid rgba(182, 64, 53, 0.25);
+      color: #66211b;
+      line-height: 1.5;
+    }
+
+    .alert strong { font-size: 1rem; }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .log {
+      display: grid;
+      gap: 8px;
+      max-height: 360px;
+      overflow: auto;
+    }
+
+    .log-item {
+      display: grid;
+      gap: 4px;
+      padding: 10px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .log-item strong {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.94rem;
+    }
+
+    .log-item span, .source-list li {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .source-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .bottom-tab {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      left: 14px;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      width: min(760px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .bottom-tab strong { font-size: 0.92rem; }
+    .bottom-tab span { color: var(--muted); font-size: 0.82rem; }
+
+    @media (max-width: 860px) {
+      .hero-grid, .phase-grid, .two-col { grid-template-columns: 1fr; }
+      .status-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .section-head { display: block; }
+    }
+
+    @media (max-width: 420px) {
+      .app { padding-inline: 10px; }
+      .panel, .card { padding: 12px; }
+      .status-strip { gap: 8px; }
+      .metric strong { font-size: 1.28rem; }
+      button { width: 100%; }
+      .bottom-tab { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <p class="eyebrow">허리 신경성형술 이후 · 배드민턴 복귀용</p>
+      <h1>오늘의 허리 상태로 다음 코스를 결정합니다</h1>
+      <p class="lead">
+        이 트래커는 AAOS의 허리 수술 후 운동 원칙과 단계적 스포츠 복귀 원칙을 바탕으로 만든 개인 기록 도구입니다.
+        통증이 줄었다고 바로 점프·스매시로 넘어가지 않고, 걷기·코어 안정화·민첩성·부분 랠리·게임 복귀 순서로 진행합니다.
+      </p>
+    </header>
+
+    <nav aria-label="페이지 이동">
+      <a href="#today">오늘 체크</a>
+      <a href="#course">운동 코스</a>
+      <a href="#rules">진행 규칙</a>
+      <a href="#history">기록</a>
+      <a href="#sources">근거</a>
+    </nav>
+
+    <main>
+      <div class="hero-grid">
+        <section class="panel" aria-labelledby="summary-title">
+          <div class="section-head">
+            <div>
+              <h2 id="summary-title">현재 진도</h2>
+              <p>체크한 운동과 단계 통과 조건을 합산해 표시합니다.</p>
+            </div>
+          </div>
+          <div class="status-strip">
+            <div class="metric"><span>전체 진행률</span><strong id="overallPct">0%</strong></div>
+            <div class="metric"><span>현재 단계</span><strong id="currentPhase">1단계</strong></div>
+            <div class="metric"><span>연속 체크</span><strong id="streakDays">0일</strong></div>
+            <div class="metric"><span>최근 통증</span><strong id="painMetric">- / 10</strong></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-top">
+              <span id="progressLabel">시작 전</span>
+              <span id="completedCount">0 / 0</span>
+            </div>
+            <div class="bar" aria-hidden="true"><div class="bar-fill" id="barFill"></div></div>
+          </div>
+        </section>
+
+        <section class="panel today" id="today" aria-labelledby="today-title">
+          <div>
+            <h2 id="today-title">오늘 체크</h2>
+            <div class="today-date" id="todayDate"></div>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="warmupDone">
+            <label for="warmupDone">워밍업과 걷기 완료<small>호흡이 찰 정도의 가벼운 걷기 또는 실내 자전거</small></label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="rehabDone">
+            <label for="rehabDone">재활 운동 완료<small>현재 단계의 코어·둔근·가동성 루틴</small></label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="badmintonDone">
+            <label for="badmintonDone">배드민턴 과제 완료<small>단계에 맞는 풋워크, 랠리, 게임 제한</small></label>
+          </div>
+          <div class="field">
+            <span>운동 후 통증/저림: <strong id="painValue">0</strong> / 10</span>
+            <input type="range" id="painScore" min="0" max="10" value="0">
+          </div>
+          <div class="field">
+            <span>메모</span>
+            <textarea id="note" placeholder="예: 오른쪽 종아리 저림 없음, 다음날 뻐근함 2/10"></textarea>
+          </div>
+          <div class="actions">
+            <button class="primary" id="saveToday">오늘 기록 저장</button>
+            <button id="exportData">기록 내보내기</button>
+          </div>
+        </section>
+      </div>
+
+      <section id="course" aria-labelledby="course-title">
+        <div class="section-head">
+          <div>
+            <h2 id="course-title">8단계 운동 코스</h2>
+            <p>기간은 예시입니다. 담당의가 정한 제한이 있으면 그 제한이 항상 우선입니다.</p>
+          </div>
+        </div>
+        <div class="phase-grid" id="phaseGrid"></div>
+      </section>
+
+      <section id="rules" class="two-col" aria-label="진행 규칙과 주의 신호">
+        <div class="card">
+          <h2>다음 단계로 가는 규칙</h2>
+          <ul class="source-list">
+            <li>운동 중 통증이 0-2/10이고 저림이 새로 생기지 않아야 합니다.</li>
+            <li>운동 다음날 통증이 평소보다 뚜렷하게 증가하지 않아야 합니다.</li>
+            <li>현재 단계의 체크포인트를 모두 완료하고 최소 3회 이상 문제 없이 반복합니다.</li>
+            <li>점프, 강한 런지, 백핸드 회전, 전력 스매시는 마지막 단계에서만 시도합니다.</li>
+          </ul>
+        </div>
+        <div class="alert">
+          <strong>즉시 중단하고 진료가 필요한 신호</strong>
+          <span>다리 힘 빠짐, 감각 저하 악화, 대소변 조절 이상, 안정을 취해도 심한 통증, 발열이나 시술 부위 이상, 밤에 깨는 통증이 있으면 운동을 멈추고 담당 의료진에게 연락하세요.</span>
+        </div>
+      </section>
+
+      <section id="history" class="two-col" aria-labelledby="history-title">
+        <div class="card timeline">
+          <div class="section-head">
+            <div>
+              <h2 id="history-title">최근 기록</h2>
+              <p>이 브라우저에만 저장됩니다.</p>
+            </div>
+          </div>
+          <div class="log" id="historyLog"></div>
+          <button class="danger" id="resetData">모든 기록 초기화</button>
+        </div>
+        <div class="card">
+          <h2>오늘 추천 강도</h2>
+          <p class="lead" id="adviceText"></p>
+        </div>
+      </section>
+
+      <section id="sources" class="card" aria-labelledby="sources-title">
+        <h2 id="sources-title">구성 근거</h2>
+        <ul class="source-list">
+          <li>AAOS OrthoInfo: 허리 수술 후 운동은 10-30분, 하루 1-3회 범위에서 의료진 감독 아래 진행하도록 안내합니다.</li>
+          <li>AAOS OrthoInfo: 수술/부상 후 운동 컨디셔닝은 일상과 스포츠 복귀에 도움이 되지만, 개인별 안전성 확인이 필요하다고 명시합니다.</li>
+          <li>배드민턴 복귀 단계는 위 원칙을 바탕으로 회전, 런지, 사이드스텝, 점프 착지 부하를 뒤로 미루는 보수적 진행표로 구성했습니다.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <div class="bottom-tab" role="status" aria-live="polite">
+    <div>
+      <strong id="bottomTitle">오늘 기록을 저장하세요</strong><br>
+      <span id="bottomSub">통증 3/10 이상이면 단계를 올리지 않습니다.</span>
+    </div>
+    <button class="primary" onclick="document.getElementById('today').scrollIntoView({behavior:'smooth'})">체크하기</button>
+  </div>
+
+  <script>
+    const phases = [
+      {
+        id: "p1",
+        title: "1단계: 보호와 순환",
+        time: "시술 직후-1주",
+        tasks: ["짧은 걷기 5-10분을 여러 번", "복식호흡", "발목 펌프", "허리 중립 자세 연습"],
+        badminton: "라켓 금지. 경기장 방문도 오래 서 있지 않기.",
+        gate: "보행 후 저림 증가 없음, 일상 통증 0-3/10.",
+        checks: ["10분 걷기 가능", "다리 저림 악화 없음", "허리 중립 자세 이해"]
+      },
+      {
+        id: "p2",
+        title: "2단계: 기본 코어 깨우기",
+        time: "1-2주",
+        tasks: ["복부 조이기 10회", "뒤꿈치 미끄러뜨리기 10회", "브릿지 아주 낮게 8회", "가벼운 실내 자전거 10-15분"],
+        badminton: "라켓 그립, 제자리 스윙 이미지 트레이닝만.",
+        gate: "운동 다음날 통증 증가가 24시간 안에 가라앉음.",
+        checks: ["코어 수축 중 숨 참지 않기", "15분 유산소 가능", "다음날 악화 없음"]
+      },
+      {
+        id: "p3",
+        title: "3단계: 안정화와 둔근",
+        time: "2-4주",
+        tasks: ["버드독 변형", "사이드 라잉 힙 어브덕션", "카운터 스쿼트 45도", "햄스트링·고관절 가동성"],
+        badminton: "제자리 섀도 스윙 30-50%, 허리 비틀림 제한.",
+        gate: "좌우 균형 운동에서 통증 2/10 이하.",
+        checks: ["버드독 8회씩", "카운터 스쿼트 10회", "가벼운 스윙 후 악화 없음"]
+      },
+      {
+        id: "p4",
+        title: "4단계: 풋워크 기초",
+        time: "4-6주",
+        tasks: ["미니 밴드 사이드스텝", "스텝업 낮은 높이", "런지 범위 50%", "걷기 25-30분"],
+        badminton: "코트에서 천천히 4코너 풋워크, 점프 없음.",
+        gate: "급정지 없이 20분 움직여도 다음날 괜찮음.",
+        checks: ["4코너 풋워크 10분", "런지 50% 통증 없음", "30분 걷기 가능"]
+      },
+      {
+        id: "p5",
+        title: "5단계: 제한 랠리",
+        time: "6-8주",
+        tasks: ["플랭크 변형", "고블릿 스쿼트 가볍게", "사이드 런지 얕게", "균형 잡기"],
+        badminton: "드롭·클리어 중심 15-20분. 스매시, 점프, 전력 대시 금지.",
+        gate: "제한 랠리 다음날 통증 0-2/10.",
+        checks: ["제한 랠리 20분", "사이드 런지 얕게 가능", "다음날 저림 없음"]
+      },
+      {
+        id: "p6",
+        title: "6단계: 민첩성과 회전",
+        time: "8-10주",
+        tasks: ["사이드 셔플", "감속 드릴", "가벼운 회전 스텝", "종아리·둔근 강화"],
+        badminton: "중간 강도 랠리 30분. 스매시는 50% 이하.",
+        gate: "방향전환 후 허리 보호 반응 없이 안정적.",
+        checks: ["셔플 6세트", "50% 스매시 문제 없음", "30분 랠리 가능"]
+      },
+      {
+        id: "p7",
+        title: "7단계: 부분 게임",
+        time: "10-12주",
+        tasks: ["착지 연습", "가벼운 점프 후 안정", "싱글 레그 밸런스", "경기 후 회복 루틴"],
+        badminton: "복식 반코트 또는 점수 제한 게임. 연속 경기 금지.",
+        gate: "게임 다음날 허리와 다리 증상이 안정적.",
+        checks: ["제한 게임 1세트", "가벼운 점프 착지 안정", "다음날 악화 없음"]
+      },
+      {
+        id: "p8",
+        title: "8단계: 완전 복귀 관리",
+        time: "12주 이후",
+        tasks: ["주 2-3회 근력 유지", "경기 전 12분 워밍업", "경기 후 걷기와 가동성", "수면·회복 기록"],
+        badminton: "의료진 승인 후 일반 게임. 첫 2주는 경기량 70%에서 시작.",
+        gate: "전력 경기 후 24-48시간 내 악화 없음.",
+        checks: ["일반 게임 2회 안정", "전력 스텝 통증 없음", "회복 루틴 습관화"]
+      }
+    ];
+
+    const storageKey = "badmintonRehabTracker.v1";
+    const todayKey = new Date().toISOString().slice(0, 10);
+    const koDate = new Intl.DateTimeFormat("ko-KR", { dateStyle: "full" }).format(new Date());
+
+    const $ = (id) => document.getElementById(id);
+    const defaultState = { daily: {}, checks: {} };
+    let state = loadState();
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || defaultState;
+      } catch {
+        return defaultState;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      render();
+    }
+
+    function allCheckIds() {
+      return phases.flatMap((phase) => phase.checks.map((_, index) => `${phase.id}-${index}`));
+    }
+
+    function completedCheckIds() {
+      return allCheckIds().filter((id) => state.checks[id]);
+    }
+
+    function currentPhaseIndex() {
+      const firstOpen = phases.findIndex((phase) => phase.checks.some((_, index) => !state.checks[`${phase.id}-${index}`]));
+      return firstOpen === -1 ? phases.length - 1 : firstOpen;
+    }
+
+    function streak() {
+      let count = 0;
+      const day = new Date();
+      while (true) {
+        const key = day.toISOString().slice(0, 10);
+        if (!state.daily[key]) break;
+        count += 1;
+        day.setDate(day.getDate() - 1);
+      }
+      return count;
+    }
+
+    function latestPain() {
+      const keys = Object.keys(state.daily).sort().reverse();
+      return keys.length ? state.daily[keys[0]].pain : null;
+    }
+
+    function renderPhases() {
+      const current = currentPhaseIndex();
+      $("phaseGrid").innerHTML = phases.map((phase, phaseIndex) => `
+        <article class="card phase-card ${phaseIndex === current ? "current" : ""}">
+          <div class="phase-title">
+            <h3>${phase.title}</h3>
+            <span class="tag">${phase.time}</span>
+          </div>
+          <ul>${phase.tasks.map((task) => `<li>${task}</li>`).join("")}</ul>
+          <div class="gate"><strong>배드민턴:</strong> ${phase.badminton}<br><strong>통과 조건:</strong> ${phase.gate}</div>
+          <div class="phase-checks">
+            ${phase.checks.map((check, index) => {
+              const id = `${phase.id}-${index}`;
+              return `<label class="mini-check"><input type="checkbox" data-check="${id}" ${state.checks[id] ? "checked" : ""}>${check}</label>`;
+            }).join("")}
+          </div>
+        </article>
+      `).join("");
+
+      document.querySelectorAll("[data-check]").forEach((input) => {
+        input.addEventListener("change", (event) => {
+          state.checks[event.target.dataset.check] = event.target.checked;
+          saveState();
+        });
+      });
+    }
+
+    function renderHistory() {
+      const keys = Object.keys(state.daily).sort().reverse().slice(0, 20);
+      $("historyLog").innerHTML = keys.length ? keys.map((key) => {
+        const item = state.daily[key];
+        const done = [item.warmup && "워밍업", item.rehab && "재활", item.badminton && "배드민턴"].filter(Boolean).join(", ") || "체크 없음";
+        return `<div class="log-item"><strong>${key}<span>통증 ${item.pain}/10</span></strong><span>${done}</span>${item.note ? `<span>${escapeHtml(item.note)}</span>` : ""}</div>`;
+      }).join("") : `<div class="log-item"><span>아직 저장된 기록이 없습니다.</span></div>`;
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    }
+
+    function renderAdvice() {
+      const pain = Number($("painScore").value);
+      const current = phases[currentPhaseIndex()];
+      let advice = `오늘은 ${current.title} 기준으로 진행하세요. 운동 후 24시간 동안 허리와 다리 증상이 안정적이면 같은 강도로 2회 더 반복합니다.`;
+      if (pain >= 5) advice = "오늘은 복귀 훈련을 중단하고 걷기와 편한 자세만 기록하세요. 저림이나 힘 빠짐이 있으면 의료진에게 문의하세요.";
+      else if (pain >= 3) advice = "오늘은 단계를 올리지 말고 전 단계 강도로 낮추세요. 배드민턴 과제는 생략하거나 50% 이하로 줄이는 편이 안전합니다.";
+      $("adviceText").textContent = advice;
+      $("bottomTitle").textContent = pain >= 3 ? "오늘은 강도 조절이 필요합니다" : "현재 단계에서 천천히 진행하세요";
+      $("bottomSub").textContent = pain >= 3 ? "통증 3/10 이상이면 다음 단계 해금 금지." : `${current.title} · ${current.time}`;
+    }
+
+    function render() {
+      const total = allCheckIds().length;
+      const done = completedCheckIds().length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      const current = currentPhaseIndex();
+      const pain = latestPain();
+
+      $("todayDate").textContent = koDate;
+      $("overallPct").textContent = `${pct}%`;
+      $("currentPhase").textContent = `${current + 1}단계`;
+      $("streakDays").textContent = `${streak()}일`;
+      $("painMetric").textContent = pain === null ? "- / 10" : `${pain} / 10`;
+      $("progressLabel").textContent = phases[current].title;
+      $("completedCount").textContent = `${done} / ${total}`;
+      $("barFill").style.width = `${pct}%`;
+
+      const today = state.daily[todayKey];
+      if (today) {
+        $("warmupDone").checked = Boolean(today.warmup);
+        $("rehabDone").checked = Boolean(today.rehab);
+        $("badmintonDone").checked = Boolean(today.badminton);
+        $("painScore").value = today.pain;
+        $("painValue").textContent = today.pain;
+        $("note").value = today.note || "";
+      }
+
+      renderPhases();
+      renderHistory();
+      renderAdvice();
+    }
+
+    $("painScore").addEventListener("input", (event) => {
+      $("painValue").textContent = event.target.value;
+      renderAdvice();
+    });
+
+    $("saveToday").addEventListener("click", () => {
+      state.daily[todayKey] = {
+        warmup: $("warmupDone").checked,
+        rehab: $("rehabDone").checked,
+        badminton: $("badmintonDone").checked,
+        pain: Number($("painScore").value),
+        note: $("note").value.trim(),
+        savedAt: new Date().toISOString()
+      };
+      saveState();
+    });
+
+    $("exportData").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `badminton-rehab-${todayKey}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    $("resetData").addEventListener("click", () => {
+      if (!confirm("모든 체크와 기록을 지울까요?")) return;
+      state = { daily: {}, checks: {} };
+      localStorage.removeItem(storageKey);
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
